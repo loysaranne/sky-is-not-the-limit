@@ -1,0 +1,65 @@
+[gd_scene load_steps=9 format=3 uid="uid://c1dgq82kgnq3c"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_elu5g"]
+[ext_resource type="Script" path="res://Scripts/platform.gd" id="2_4m62e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ikemt"]
+size = Vector2(1000, 200)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_m0t0a"]
+size = Vector2(1000, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hdq2s"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_e7ywt"]
+size = Vector2(20, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3h7td"]
+size = Vector2(100, 10)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_w12h7"]
+size = Vector2(100, 10)
+
+[node name="Game" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(270, 860)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ikemt")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground"]
+texture = SubResource("PlaceholderTexture2D_m0t0a")
+
+[node name="Player" type="CharacterBody2D" parent="."]
+position = Vector2(270, 700)
+platform_on_leave = 2
+script = ExtResource("1_elu5g")
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, -200)
+limit_bottom = 960
+limit_smoothed = true
+position_smoothing_enabled = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_hdq2s")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = SubResource("PlaceholderTexture2D_e7ywt")
+
+[node name="SuperJumpTimer" type="Timer" parent="Player"]
+one_shot = true
+
+[node name="Platform" type="StaticBody2D" parent="."]
+position = Vector2(270, 600)
+script = ExtResource("2_4m62e")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform"]
+shape = SubResource("RectangleShape2D_3h7td")
+one_way_collision = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Platform"]
+texture = SubResource("PlaceholderTexture2D_w12h7")
+
+[connection signal="timeout" from="Player/SuperJumpTimer" to="Player" method="_on_super_jump_timer_timeout"]
